@@ -19,7 +19,6 @@ services:
         ports:
           - "5555:5432"
         volumes:
-          - /srv/docker/postgresql:/var/lib/postgresql
           - ./db/postgresql.conf:/etc/postgresql/9.5/main/postgresql.conf
           - ./db/pg_hba.conf:/etc/postgresql/9.5/main/pg_hba.conf
         command: postgres -c config_file=/etc/postgresql/9.5/main/postgresql.conf
