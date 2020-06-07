@@ -1,0 +1,35 @@
+version: '2'
+services:
+    testapp:
+        build: ./web
+        volumes:
+          - ./web/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
+          - ./web/context.xml:/usr/local/tomcat/webapps/HelpdeskApp/META-INF/context.xml
+          - ./web/context.xml:/usr/local/tomcat/webapps/host-manager/META-INF/context.xml
+          - ./web/context.xml:/usr/local/tomcat/webapps/manager/META-INF/context.xml
+        ports:
+          - "8282:8080"
+        links:
+          - testappdb
+        networks:
+          - testappnet
+
+    testappdb:
+        build: ./db
+        ports:
+          - "5555:5432"
+        volumes:
+          - /srv/docker/postgresql:/var/lib/postgresql
+          - ./db/postgresql.conf:/etc/postgresql/9.5/main/postgresql.conf
+          - ./db/pg_hba.conf:/etc/postgresql/9.5/main/pg_hba.conf
+        command: postgres -c config_file=/etc/postgresql/9.5/main/postgresql.conf
+        networks:
+          - testappnet
+
+networks:
+    testappnet:
+      driver: bridge
+      ipam:
+        driver: default
+        config:
+          - subnet: 172.28.0.0/16
