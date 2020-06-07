@@ -1,5 +1,6 @@
-FROM tomcat:8.5.20-jre8
+FROM tomcat:9.0-jre8
 
-COPY ./app /usr/local/tomcat/webapps/
+COPY ./tomcat-users.xml /usr/local/tomcat/conf/
+COPY ./app/cool-memes.war /usr/local/tomcat/webapps/
 
 CMD ["catalina.sh", "run"]
